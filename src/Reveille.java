@@ -7,6 +7,7 @@ public class Reveille extends Actor
     boolean isJumping;
     boolean isFalling;
     boolean facingRight;
+    boolean hasHB;
     int jumpHeight;
     MayflowerImage[] runFrames;
     MayflowerImage[] rightFrames;
@@ -14,6 +15,7 @@ public class Reveille extends Actor
     int counter;
     int currentFrame;
     int floorHeight;
+    int counterHB = 69;
 
     public Reveille(int floorLvl)
     {
@@ -25,6 +27,7 @@ public class Reveille extends Actor
         isJumping = false;
         isFalling = true;
         facingRight = true;
+        hasHB = true;
         rightFrames = new MayflowerImage[4];
         rightFrames[0] = new MayflowerImage("img/rev/rev-run1.png");
         rightFrames[1] = new MayflowerImage("img/rev/rev-run4.png");
@@ -51,6 +54,7 @@ public class Reveille extends Actor
     @Override
     public void act()
     {
+        toggleHB();
         checkDir();
         animate();
         gravity();
@@ -140,7 +144,13 @@ public class Reveille extends Actor
             }
             MayflowerImage sprite = runFrames[currentFrame];
             setImage(sprite);
-            setBounds(new Rectangle(10,0,145,100));
+            if (hasHB)
+            {
+                setBounds(new Rectangle(10, 0, 145, 100));
+            }
+            else {
+                setBounds(new Rectangle(10,0,0,0));
+            }
             currentFrame++;
             counter = 0;
         }
@@ -163,4 +173,15 @@ public class Reveille extends Actor
             runFrames = leftFrames;
         }
     }
+
+    public void toggleHB()
+    {
+        if(Mayflower.isKeyDown(Keyboard.KEY_P) && counterHB > 5)
+        {
+            hasHB = !hasHB;
+            counterHB = 0;
+        }
+        counterHB++;
+    }
+
 }
